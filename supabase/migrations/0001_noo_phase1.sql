@@ -76,6 +76,10 @@ create table if not exists public.noo_outlets (
   unique (batch_id, id)
 );
 
+do $$ begin
+  alter table public.noo_outlets add constraint noo_payment_limit_check check ((upper(payment)='CASH' and requested_credit_limit=0) or (upper(payment)='CREDIT' and requested_credit_limit>0));
+exception when duplicate_object then null; end $$;
+
 create table if not exists public.noo_attachments (
   id uuid primary key default gen_random_uuid(), outlet_id uuid not null references public.noo_outlets(id) on delete cascade,
   attachment_type text not null check (attachment_type in ('KTP','STORE_FRONT','STORE_ADDITIONAL')),
