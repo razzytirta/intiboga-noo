@@ -4,7 +4,9 @@ create type public.noo_role as enum ('SUPERVISOR_SALES','SALES_MANAGER','GENERAL
 create type public.noo_batch_status as enum ('DRAFT','SUBMITTED','IN_REVIEW','PARTIALLY_APPROVED','COMPLETED','CANCELLED');
 create type public.noo_outlet_status as enum ('DRAFT','SUBMITTED','SM_REVIEW','SM_REVISION','SM_REJECTED','GM_REVIEW','GM_REVISION','GM_REJECTED','WAITING_IT','PROCESSING','BOSNET_SUCCESS','BOSNET_FAILED','COMPLETED');
 create type public.noo_decision as enum ('APPROVED','REVISION','REJECTED');
-create type public.noo_gps_source as enum ('BROWSER','MANUAL_SALESMAN');
+do $$ begin
+  create type public.noo_gps_source as enum ('BROWSER','MANUAL_SALESMAN');
+exception when duplicate_object then null; end $$;
 
 create table if not exists public.profiles (
   id uuid primary key references auth.users(id) on delete cascade,
