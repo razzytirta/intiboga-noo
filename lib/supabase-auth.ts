@@ -8,6 +8,7 @@ export async function getAuthenticatedContext(){
   const cookieStore=await cookies();
   const client=createServerClient(url,key,{cookies:{getAll:()=>cookieStore.getAll(),setAll:(items)=>{try{items.forEach(({name,value,options})=>cookieStore.set(name,value,options))}catch{}}}});
   const {data:{user},error}=await client.auth.getUser(); if(error||!user) throw new Error('Sesi login tidak valid');
-  const admin=getSupabaseServer(); const {data:profile}=await admin.from('profiles').select('*').eq('id',user.id).single();
-  if(!profile?.is_active) throw new Error('User tidak aktif'); return {user,profile,admin};
+  const {data:profile,error:profileError}=await client.from('profiles').select('*').eq('id',user.id).single();
+  if(profileError||!profile?.is_active) throw new Error('User tidak aktif');
+  const admin=getSupabaseServer(); return {user,profile,admin};
 }
