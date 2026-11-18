@@ -4,6 +4,7 @@ create type public.noo_role as enum ('SUPERVISOR_SALES','SALES_MANAGER','GENERAL
 create type public.noo_batch_status as enum ('DRAFT','SUBMITTED','IN_REVIEW','PARTIALLY_APPROVED','COMPLETED','CANCELLED');
 create type public.noo_outlet_status as enum ('DRAFT','SUBMITTED','SM_REVIEW','SM_REVISION','SM_REJECTED','GM_REVIEW','GM_REVISION','GM_REJECTED','WAITING_IT','PROCESSING','BOSNET_SUCCESS','BOSNET_FAILED','COMPLETED');
 create type public.noo_decision as enum ('APPROVED','REVISION','REJECTED');
+create type public.noo_gps_source as enum ('BROWSER','MANUAL_SALESMAN');
 
 create table if not exists public.profiles (
   id uuid primary key references auth.users(id) on delete cascade,
@@ -72,9 +73,15 @@ create table if not exists public.noo_outlets (
   latitude numeric(10,7) not null, longitude numeric(10,7) not null,
   gps_accuracy numeric(8,2) not null check (gps_accuracy >= 0), gps_captured_at timestamptz not null,
   gps_captured_by uuid not null references public.profiles(id),
+  gps_source public.noo_gps_source not null default 'BROWSER', gps_reported_by text, gps_reported_at timestamptz,
   created_at timestamptz not null default now(), updated_at timestamptz not null default now(),
   unique (batch_id, id)
 );
+
+alter table public.noo_outlets add column if not exists gps_source public.noo_gps_source not null default 'BROWSER';
+alter table public.noo_outlets add column if not exists gps_reported_by text;
+alter table public.noo_outlets add column if not exists gps_reported_at timestamptz;
+alter table public.noo_outlets alter column gps_accuracy drop not null;
 
 do $$ begin
   alter table public.noo_outlets add constraint noo_payment_limit_check check ((upper(payment)='CASH' and requested_credit_limit=0) or (upper(payment)='CREDIT' and requested_credit_limit>0));
