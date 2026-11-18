@@ -1,0 +1,4 @@
+import {NextResponse} from 'next/server';
+import {getAuthenticatedContext} from '../../../lib/supabase-auth';
+import {approvalSchema} from '../../../lib/validation';
+export async function POST(req:Request){try{const {profile,admin}=await getAuthenticatedContext();if(!['SALES_MANAGER','GENERAL_MANAGER','ADMIN'].includes(profile.role))return NextResponse.json({error:'Tidak berwenang'},{status:403});const parsed=approvalSchema.parse(await req.json());const {data,error}=await admin.rpc('noo_record_approval',{p_outlet_id:parsed.outlet_id,p_decision:parsed.decision,p_notes:parsed.notes||null,p_credit_limit:parsed.credit_limit??null,p_data_version:parsed.data_version});if(error)throw error;return NextResponse.json({approval:data});}catch(e){return NextResponse.json({error:e instanceof Error?e.message:'Approval gagal'},{status:400});}}
