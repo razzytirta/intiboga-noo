@@ -1,0 +1,2 @@
+'use client';
+export default function Pagination({page,setPage,total,pageSize=10}:{page:number;setPage:(v:number)=>void;total:number;pageSize?:number}){const pages=Math.max(1,Math.ceil(total/pageSize));if(pages<=1)return null;return <div className="actions" style={{justifyContent:'center',marginTop:16}}><button className="btn secondary" disabled={page<=1} onClick={()=>setPage(page-1)}>Sebelumnya</button><span className="badge">Halaman {page} / {pages}</span><button className="btn secondary" disabled={page>=pages} onClick={()=>setPage(page+1)}>Berikutnya</button></div>}
