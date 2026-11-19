@@ -1,0 +1,3 @@
+'use client';
+import {useEffect,useState} from 'react';
+export default function AuditPanel(){const [rows,setRows]=useState<any[]>([]);const [error,setError]=useState('');useEffect(()=>{fetch('/api/audit').then(r=>r.json()).then(v=>{if(v.error)setError(v.error);else setRows(v.data||[])})},[]);return <div className="card"><h3 className="section-title">Audit Log</h3>{error&&<div className="notice">{error}</div>}<table className="table"><thead><tr><th>Waktu</th><th>Aksi</th><th>Entity</th><th>User</th></tr></thead><tbody>{rows.map(r=><tr key={r.id}><td>{new Date(r.created_at).toLocaleString('id-ID')}</td><td>{r.action}</td><td>{r.entity_type}</td><td>{r.user_id}</td></tr>)}</tbody></table>{!rows.length&&!error&&<div className="empty">Belum ada aktivitas.</div>}</div>}
