@@ -7,7 +7,7 @@ export async function POST(request: Request) {
     const body = await request.json() as { outlet_ids?: string[] };
     if (!body.outlet_ids?.length) return NextResponse.json({ error: 'Pilih minimal satu outlet' }, { status: 400 });
     const supabase = getSupabaseServer();
-    const { data, error } = await supabase.from('noo_outlets').select('id,customer_name,contact_person,address,district,village,city,postal_code,province,country,phone,latitude,longitude,batch_id,status,noo_batches(branch_id,salesmen(bosnet_sales_code),branches(workplace_code)),noo_bosnet_data(customer_number,bosnet_status)').in('id', body.outlet_ids);
+    const { data, error } = await supabase.from('noo_outlets').select('id,customer_name,owner_name,nik,contact_person,address,district,village,city,postal_code,province,country,phone,latitude,longitude,bank_name,bank_account_number,notes,outlet_type,batch_id,status,noo_batches(branch_id,salesmen(bosnet_sales_code),branches(workplace_code)),noo_bosnet_data(customer_number,bosnet_status)').in('id', body.outlet_ids);
     if (error) throw error;
     const outlets: ExportOutlet[] = [];
     for (const row of (data || []) as any[]) {
