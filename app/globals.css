@@ -4,3 +4,7 @@
 .content{max-width:none;margin:0;align-self:stretch;text-align:left}.layout,.grid{width:100%;align-items:start}.card{text-align:left}
 .topbar-brand{display:none}.topbar{justify-content:flex-start}
 .side{flex-shrink:0}.content{min-width:0}
+.notice{animation:toast-in .22s ease-out;border-left:4px solid var(--navy);box-shadow:0 8px 22px rgba(7,31,58,.08)}
+button{transition:transform .15s ease,box-shadow .15s ease,background-color .15s ease}button:hover{transform:translateY(-1px);box-shadow:0 5px 14px rgba(7,31,58,.14)}button:active{transform:translateY(0);box-shadow:none}button:disabled{opacity:.6;cursor:not-allowed;transform:none}
+.badge{transition:background-color .2s ease,transform .2s ease}.badge:hover{transform:scale(1.03)}
+@keyframes toast-in{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
