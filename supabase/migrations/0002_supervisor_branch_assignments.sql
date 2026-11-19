@@ -20,6 +20,6 @@ from (values
   ('ziad', '017'),('ziad', '025'),
   ('yuli', '018'),('yuli', '024')
 ) as x(supervisor_name, workplace_code)
-join public.profiles p on lower(coalesce(p.full_name,'')) = x.supervisor_name and p.role = 'SUPERVISOR_SALES'
+join public.profiles p on lower(coalesce(p.full_name,'')) like '%' || x.supervisor_name || '%' and p.role = 'SUPERVISOR_SALES'
 join public.branches b on b.workplace_code = x.workplace_code
 on conflict (supervisor_id, branch_id) do update set is_active = true;
