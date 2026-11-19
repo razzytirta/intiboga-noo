@@ -46,7 +46,7 @@ return <div className="shell">
         {profileOpen&&<div className="profile-dropdown"><div className="profile-role">{role}</div><button onClick={()=>getSupabaseBrowser()?.auth.signOut()}>Keluar</button></div>}
       </div>
     </nav>
-    <div className="top"><div><div className="eyebrow">{role}</div><h1 className="h1">{active==='Dashboard'?'Dashboard':active}</h1><div className="muted">Kelola New Outlet Opening secara aman dan terdokumentasi.</div></div><div className="actions"><span className="badge">{role}</span></div></div>
+    <div className="top"><div><div className="eyebrow">NOO MANAGEMENT</div><h1 className="h1">{active==='Dashboard'?'Dashboard':active}</h1><div className="muted">Kelola New Outlet Opening secara aman dan terdokumentasi.</div></div><div className="actions"></div></div>
     {message&&<div className="notice" style={{marginBottom:16}}>{message}</div>}
     {body()}
   </main>
