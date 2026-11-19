@@ -1,0 +1,3 @@
+import {NextResponse} from 'next/server';
+import {getAuthenticatedContext} from '../../../lib/supabase-auth';
+export async function GET(){try{const {profile,admin}=await getAuthenticatedContext();if(profile.role!=='SUPERVISOR_SALES')return NextResponse.json({data:[]});const {data,error}=await admin.from('noo_supervisor_branches').select('branch_id,branches(id,workplace_code,branch_name,is_active)').eq('supervisor_id',profile.id).eq('is_active',true);if(error)throw error;return NextResponse.json({data:(data||[]).map(x=>Array.isArray(x.branches)?x.branches[0]:x.branches).filter(Boolean)});}catch(e){return NextResponse.json({error:e instanceof Error?e.message:'Gagal membaca mapping cabang'},{status:400});}}
