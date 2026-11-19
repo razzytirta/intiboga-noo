@@ -34,7 +34,7 @@ if(!authReady)return <main className="content"><div className="card" style={{max
 return <div className="shell">
   <aside className="side">
     <div className="brand">NOO INTIBOGA<small>PT INTIBOGA MANDIRI</small></div>
-    <nav className="nav">{menu.map(([label,key])=><button key={key} className={active===key?'active':''} onClick={()=>{setActive(key);sessionStorage.setItem('noo-active-menu',key)}}>{label}</button>)}</nav>
+    <nav className="nav">{menu.filter(([,key])=>{const access:any={Dashboard:['SUPERVISOR_SALES','SALES_MANAGER','GENERAL_MANAGER','IT','ADMIN'],PengajuanGrid:['SUPERVISOR_SALES','ADMIN'],Drafts:['SUPERVISOR_SALES','ADMIN'],Pengajuan:['SUPERVISOR_SALES','ADMIN'],Review:['SALES_MANAGER','ADMIN'],GM:['GENERAL_MANAGER','ADMIN'],IT:['IT','ADMIN'],Counter:['IT','ADMIN'],Map:['SUPERVISOR_SALES','SALES_MANAGER','GENERAL_MANAGER','IT','ADMIN'],Branches:['ADMIN'],Salesmen:['ADMIN'],Users:['ADMIN'],Export:['IT','ADMIN'],Audit:['IT','ADMIN']};return access[key]?.includes(role)}).map(([label,key])=><button key={key} className={active===key?'active':''} onClick={()=>{setActive(key);sessionStorage.setItem('noo-active-menu',key)}}>{label}</button>)}</nav>
   </aside>
   <main className="content">
     <nav className="topbar">
